@@ -1,12 +1,12 @@
 :root {
-  font-family: Cambria,Georgia,serif;
+  font-family: FreeMono, monospace;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
-  background-image: radial-gradient(#242424 2%, transparent 3%);
+  /* background-image: radial-gradient(#242424 2%, transparent 3%); */
   background-color: #ffffcc;
-  background-size: 25px 25px;
+  /* background-size: 25px 25px; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
