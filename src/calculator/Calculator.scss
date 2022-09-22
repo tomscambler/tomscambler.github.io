@@ -1,0 +1,56 @@
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+//   *{
+//     outline: 1px solid black;
+//   }
+  
+  .calculator{
+    border: 20px solid rgb(110, 109, 109);
+    font-family: monospace;
+  }
+  
+  .viewers{
+    color:rgb(152, 231, 33);
+  }
+  
+  .buttons{
+    display:flex;
+  }
+  
+  .numberButtons{
+    width:150px;
+  }
+  
+  .numberButton{
+    background:rgb(110, 109, 109);
+  }
+  
+  .operationButtons{
+    display:flex;
+    flex-direction: column;
+  }
+  
+  .operationButton{
+    background:rgb(104, 11, 150);
+  }
+  
+  .unaryButtons{
+    display:flex;
+    flex-direction: column;
+  }
+  .unaryButton{
+    background:rgb(15, 112, 33);
+  }
+  
+  .powerButtons{
+    display:flex;
+    flex-direction: column;
+  }
+  .powerButton{
+    background: rgb(201, 111, 9);
+  }
+  

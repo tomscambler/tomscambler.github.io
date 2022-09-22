@@ -1,27 +1,27 @@
-import { useState } from 'react'
-import { BlankPage } from "./blankPage/BlankPage";
-import './App.css'
+import { Baduk } from "./baduk/Baduk";
+import { Calculator } from "./calculator/Calculator";
+import { LandingPage } from "./landingPage/LandingPage";
+import { Route, Routes } from "react-router-dom";
+import './App.scss'
+
+function MarsMission() {
+  window.location.href = "https://mars-mission-staging.herokuapp.com/";
+  return null;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <header></header>
-      <body>
-        <div className="button--border">
-          <div className="button--actual">
-            <div className="button--content">
-              Calculator
-              <img src="images/calculator.png" className="button--image" />
-              <br />
-              <p className="button--text">The Calculator app has been built using <ul className="skills-listed"><li>React</li><li>HTML</li><li>SCSS</li></ul></p>
-            </div>
-          </div>
-        </div>
-      </body>
-    </div>
+    <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/calculator" element={<Calculator />} />
+        <Route path="/mars-mission" element={<MarsMission />} />
+        <Route path="/baduk" element={<Baduk />} />
+    </Routes>
   )
 }
 
-export default App
+export default App;
+
+
+

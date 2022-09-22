@@ -1,0 +1,72 @@
+@import '../constants.scss';
+
+a {
+  all: initial;
+  all: unset;
+}
+
+.button--menu {
+  display: flex;
+  flex-direction: row;
+}
+
+.button--border {
+  background-color: $primary;
+  color: $primary;
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  transition-duration: 0.2s;
+  &:hover {
+    transform: translate(-3px, -3px);
+    transition-duration: 0.2s;
+    box-shadow: 0 4px 8px 0 $primary;
+  }
+}
+
+.button--actual {
+  background-color: $secondary;
+  border: 1px solid $primary;
+  width: 100%;
+  height: 100%;
+  transition-duration: 0.2s;
+  &:hover {
+    transform: translate(6px, 6px);
+    transition-duration: 0.2s;
+    border: 1px solid $primary;
+    cursor: pointer;
+  }
+}
+
+.button--content {
+  filter: grayscale(100%);
+  transition-duration: 0.2s;
+  width: 90%;
+  height: 90%;
+  padding: 5%;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: left;
+  &:hover {
+    filter: grayscale(0%);
+    transition-duration: 0.2s;
+  }
+}
+
+.button--image {
+  float:right;
+  padding: 5%;
+}
+
+.button--text {
+  font-family: Gill Sans, sans-serif;
+  // text-align: justify;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.skills-listed {
+  padding-inline-start: 20px;
+  margin-block-start: 5px;
+}
