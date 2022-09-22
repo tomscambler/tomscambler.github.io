@@ -28,19 +28,17 @@ export const LandingPage: React.FunctionComponent = () => {
   return ( 
     <div className="button--menu">
     {ProjectList.map( Project => 
-    <Link to={{pathname: Project.route}}>
-      <div className="button--border">
-        <div className="button--actual">
-          <div className="button--content">
-            {Project.title}
-            <img src={Project.image} className="button--image" />
-            <p className="button--text">{Project.description}</p>
+      <Link to={{pathname: Project.route}}>
+        <div className="button--border">
+          <div className="button--actual">
+            <div className="button--content">
+              {Project.title}
+              <img src={Project.image} className="button--image" />
+              <p className="button--text">{Project.description}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>)}
+      </Link>)}
     </div>
     );
 }
-
-//      "description":"The Calculator app has been built using <ul className=\"skills-listed\"><li>React</li><li>HTML</li><li>SCSS</li></ul>"
