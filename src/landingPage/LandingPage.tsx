@@ -18,7 +18,7 @@ var ProjectList = [
   {
     "title":"Go",
     "image":"images/baduk.png",
-    "description":"Go app in progress",
+    "description":"Go app in rapid development",
     "route":"/baduk"
   } 
 ];
