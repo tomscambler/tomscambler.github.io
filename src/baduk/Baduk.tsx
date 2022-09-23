@@ -171,14 +171,10 @@ export const Baduk: React.FunctionComponent = () => {
                         let newGroupState = alteredGroupState(boardState, groupState, location, friendlyColor);
                         let newBoardState = alteredBoardState(boardState, newGroupState, location, friendlyColor);
                         
-                        console.log(newGroupState);
-                        // console.log(newBoardState);
-                        // 
-                        //check if any enemypieces need to be removed
+                        //check if any enemy pieces have been taken
                         currentGroups(newGroupState).filter( thisGroup => colorOf(thisGroup, newBoardState, newGroupState)==enemyColor).forEach( thisGroup => {
                             let thisGroupLives = false;
-                            // console.log(thisGroup, colorOf(thisGroup, newBoardState, newGroupState));
-                            for ( let location=0; location<newGroupState.length; location++) {
+                            for (let location=0; location<newGroupState.length; location++) {
                                 if(newGroupState[location]==thisGroup) {
                                     const directions = ["UP", "RIGHT", "DOWN", "LEFT"];
                                     directions.forEach( direction => {
@@ -187,7 +183,6 @@ export const Baduk: React.FunctionComponent = () => {
                                     });
                                 }
                             }
-             
                             if(!thisGroupLives) {
                                 for (let i=0; i<boardState.length; i++) {
                                     if(newGroupState[i]==thisGroup) {
@@ -197,12 +192,32 @@ export const Baduk: React.FunctionComponent = () => {
                             }
                         });
 
-                        //check if any friendly pieces need to be removed
-
+                        //check if any friendly pieces need to be removed, in which case it would be an illegal move
+                        let revertGroupState = newGroupState;
+                        let revertBoardState = newBoardState;
+                        currentGroups(newGroupState).filter( thisGroup => colorOf(thisGroup, newBoardState, newGroupState)==friendlyColor).forEach( thisGroup => {
+                            let thisGroupLives = false;
+                            for (let location=0; location<newGroupState.length; location++) {
+                                if(newGroupState[location]==thisGroup) {
+                                    const directions = ["UP", "RIGHT", "DOWN", "LEFT"];
+                                    directions.forEach( direction => {
+                                        console.log(direction, stateOfAdjacentPiece(newBoardState, newGroupState, location, direction));
+                                        thisGroupLives = stateOfAdjacentPiece(newBoardState, newGroupState, location, direction)!.board=="empty" || thisGroupLives;
+                                    });
+                                }
+                            }
+                            if(!thisGroupLives) {
+                                console.log("Illegal move");
+                                newGroupState = groupState;
+                                newBoardState = boardState;
+                            }
+                        });
                         
                         setGroupState(newGroupState);
                         setBoardState(newBoardState);
-                        setFriendlyColor(friendlyColor=="black"?"white":"black");
+                        if(newBoardState!=boardState) {
+                            setFriendlyColor(enemyColor);
+                        }
                     }
                 }}></button>
             ))}
