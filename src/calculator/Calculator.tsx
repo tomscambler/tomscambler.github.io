@@ -26,6 +26,18 @@ function unaryCalculation(display:number, unary:string){
     case 'sqrt':
       return Math.sqrt(display);
       break;
+    case 'log':
+      return Math.log10(display);
+      break;
+    case 'ln':
+      return Math.log(display);
+      break;
+    case '1/x':
+      return 1/display;
+      break;
+    case 'Abs':
+      return Math.abs(display);
+      break;
     default:
       return 0;
   }
@@ -56,10 +68,10 @@ function evaluateCalculation(display:number, operation:string, operand:number|nu
     case '-':
       return display - operand;
       break;
-    case '*':
+    case '×':
       return display * operand;
       break;
-    case '/':
+    case '÷':
       return display / operand;
       break;
     case '^':
@@ -81,117 +93,104 @@ export const Calculator: React.FunctionComponent = () => {
   const [ans,       setAns      ] = useState <number|null> (null);
 
   const numberSymbols    = [7,8,9,4,5,6,1,2,3,0     ];
-  const operationSymbols = ['+','-','*','/','^'     ];
-  const powerSymbols     = ['=','C','AC','Del','Ans'];
-  const unarySymbols     = ['sin','cos','tan','sqrt'];
+  const operationSymbols = ['^','+','-','×','÷'     ];
+  const powerSymbols     = ['C','AC','Del','='];//,'Ans'
+  const unarySymbols     = ['sin','cos','tan','sqrt','log','ln','1/x','Abs'];
 
+  const displayPrecision = 11;
+
+  function viewer(display: number, operand: number|null):string {
+    return operand ? operand.toString().substring(0,displayPrecision) : display.toString().substring(0,displayPrecision);
+  }
+  
   return (
     <div className="calculator">
+      <div className="viewer">
 
-      <div className="viewers">
-
-        <div className="viewer display">
-          Display: {display}
+        <div className="viewer__display">
+          {viewer(display, operand)}
         </div>
 
-        <div className="viewer operation">
-          Operation: {operation}
+        <div className="viewer__operation">
+          {operation}
         </div>
 
-        <div className="viewer operand">
-          Operand: {operand}
-        </div>
-
-        <div className="viewer ans">
-          Ans: {ans}
-        </div>
       </div>
-
-
       <div className="buttons">
-
-        <div className="numberButtons">
-          {numberSymbols.map( numberSymbol => (
-              <button className="numberButton" onClick={ () => {
-                setOperand( (operand===null?0:operand)*10 + ((operand===null?0:operand)>=0?1:-1)*numberSymbol )
-                }}>
-                  {numberSymbol}
+        <div className="buttons__unary">
+            {unarySymbols.map( unarySymbol => (
+                <button className="buttons__unary--individual" onClick={ () => {
+                  setDisplay(unaryCalculation(display,unarySymbol));
+                  }}>
+                    {unarySymbol}
+                </button>
+                )
+            )}
+        </div>
+        <div className="buttons__number">
+            {numberSymbols.map( numberSymbol => (
+                <button className="buttons__number--individual" onClick={ () => {
+                  setOperand( (operand===null?0:operand)*10 + ((operand===null?0:operand)>=0?1:-1)*numberSymbol )
+                  }}>
+                    {numberSymbol}
+                </button>
+                )
+            )}
+        </div>
+        <div className="buttons__operation">
+            {operationSymbols.map( operationSymbol => (
+              <button className="buttons__operation--individual" onClick={ () => {
+                    if (operand!==null){
+                      if (operation==='='){
+                        setDisplay(operand);
+                      }
+                      else {
+                        setDisplay(evaluateCalculation(display,operation,operand));
+                      }
+                    }
+                    setOperation(operationSymbol);
+                    setOperand(null);
+                  }
+                }>
+                {operationSymbol}
               </button>
               )
-          )}
+            )}
         </div>
-
-
-        <div className="operationButtons">
-          {operationSymbols.map( operationSymbol => (
-            <button className="operationButton" onClick={ () => {
-                  if (operand!==null){
-                    if (operation==='='){
-                      setDisplay(operand);
+        <div className="buttons__power">
+            {powerSymbols.map( powerSymbol => (
+                <button className="buttons__power--individual" onClick={ () => {
+                    switch(powerSymbol) {
+                      case '=':
+                        setAns(evaluateCalculation(display,operation,operand));
+                        setDisplay(evaluateCalculation(display,operation,operand));
+                        setOperation('=');
+                        setOperand(null);
+                        break;
+                      case 'AC':
+                        setOperand(null);
+                        setDisplay(0);
+                        setOperation('');
+                        break;
+                      case 'C':
+                        setOperand(display);
+                        setDisplay(0);
+                        setOperation('');
+                        break;
+                      case 'Del':
+                        let temp = operand===null?0:operand;
+                        temp = Math.abs(temp);
+                        temp = parseFloat(temp.toString().slice(0,-1));
+                        setOperand( temp*Math.sign(operand===null?0:operand) );
+                        break;
+                      case 'Ans':
+                        setOperand(ans);
+                        break;
                     }
-                    else {
-                      setDisplay(evaluateCalculation(display,operation,operand));
-                    }
-                  }
-                  setOperation(operationSymbol);
-                  setOperand(null);
-                }
-              }>
-              {operationSymbol}
-            </button>
-            )
-          )}
-        </div>
-
-
-        <div className="unaryButtons">
-          {unarySymbols.map( unarySymbol => (
-              <button className="unaryButton" onClick={ () => {
-                setDisplay(unaryCalculation(display,unarySymbol));
                 }}>
-                  {unarySymbol}
-              </button>
-              )
-          )}
-        </div>
-
-
-        <div className="powerButtons">
-          {powerSymbols.map( powerSymbol => (
-              <button className="powerButton" onClick={ () => {
-                  switch(powerSymbol) {
-                    case '=':
-                      setAns(evaluateCalculation(display,operation,operand));
-                      setDisplay(evaluateCalculation(display,operation,operand));
-                      setOperation('=');
-                      setOperand(null);
-                      break;
-                    case 'AC':
-                      setOperand(null);
-                      setDisplay(0);
-                      setOperation('');
-                      break;
-                    case 'C':
-                      setOperand(display);
-                      setDisplay(0);
-                      setOperation('');
-                      break;
-                    case 'Del':
-                      let temp = operand===null?0:operand;
-                      temp = Math.abs(temp);
-                      temp = parseFloat(temp.toString().slice(0,-1));
-                      setOperand( temp*Math.sign(operand===null?0:operand) );
-                      break;
-                    case 'Ans':
-                      setOperand(ans);
-                      break;
-                  }
-                }
-              }>
-                {powerSymbol}
-              </button>
-            )
-          )}
+                  {powerSymbol}
+                </button>
+              ))}
         </div>
       </div>
     </div>

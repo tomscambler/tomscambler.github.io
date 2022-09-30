@@ -1,56 +1,114 @@
-#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-//   *{
-//     outline: 1px solid black;
+@import "../constants.scss";
+
+// button {
+//   all: initial;
+//   all: unset;
+
+//   box-shadow: 3px 3px black;
+//   border: 1px solid black;
+//   padding: 1px;
+//   margin: 5px;
+//   &:active {
+//     box-shadow: none;
+//     transform: translate(3px, 3px);
 //   }
+// }
+
+#root {
+  max-width: 1240px;
+  margin: 0 auto;
+  text-align: center;
+}
   
-  .calculator{
-    border: 20px solid rgb(110, 109, 109);
-    font-family: monospace;
-  }
-  
-  .viewers{
-    color:rgb(152, 231, 33);
-  }
-  
-  .buttons{
-    display:flex;
-  }
-  
-  .numberButtons{
-    width:150px;
-  }
-  
-  .numberButton{
-    background:rgb(110, 109, 109);
-  }
-  
-  .operationButtons{
-    display:flex;
-    flex-direction: column;
-  }
-  
-  .operationButton{
-    background:rgb(104, 11, 150);
-  }
-  
-  .unaryButtons{
-    display:flex;
-    flex-direction: column;
-  }
-  .unaryButton{
-    background:rgb(15, 112, 33);
-  }
-  
-  .powerButtons{
-    display:flex;
-    flex-direction: column;
-  }
-  .powerButton{
-    background: rgb(201, 111, 9);
-  }
-  
+.calculator{
+  border: 10px solid $primary;
+  background-color: grey;
+  border: solid 4px rgb(72, 73, 84);
+  box-shadow: 3px 3px black;
+  width: 280px;
+  height: 460px;
+  font-family: monospace;
+}
+
+.viewer {
+  $height: 50px;
+  width: 200px;
+  background-color: rgb(132, 144, 101);
+  border: 2px solid rgb(85, 93, 65);
+  border-radius: 10px;
+  height: $height;
+  line-height: $height;
+  font-size: calc($height / 1.5);
+  padding: 20px;
+  margin: 20px;
+  display: inline-block;
+}
+
+.viewer__display {
+  text-align: right;
+}
+
+.viewer__operation {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  position: relative;
+  top: -60px;
+  left: 0px;
+}
+
+.buttons {
+  color: $primary;
+}
+
+.buttons__unary--individual {
+  background-color: rgb(72, 73, 84);
+  $height: 18px;
+  width: 3*$height;
+  height: $height;
+  line-height: $height;
+  font-size: calc($height / 1.5);
+}
+
+.buttons__number {
+  width: 150px;
+  float: left;
+  margin: 5px
+}
+
+.buttons__number--individual {
+  background-color: rgb(26, 29, 52);
+  $height: 36px;
+  width: $height;
+  height: $height;
+  line-height: $height;
+}
+
+.buttons__operation {
+  width:50px;
+  float: left;
+  margin: 5px
+}
+
+.buttons__operation--individual {
+  background-color: rgb(26, 29, 52);
+  $height: 36px;
+  width: $height;
+  height: $height;
+  line-height: $height;
+}
+
+.buttons__power {
+  width: 50px;
+  float: left;
+  margin: 5px
+}
+
+.buttons__power--individual {
+  background-color: rgb(100, 14, 14);
+  $height: 36px;
+  width: $height;
+  height: $height;
+  line-height: $height;
+}

@@ -27,45 +27,24 @@ function tileType(boardSize: number, currentLocation: number, state: string):str
     switch(currentRow) {
         case firstRow:
             switch(currentCol) {
-                case firstCol : return `top-left ${state}`;
-                case lastCol  : return `top-right ${state}`;
-                default       : return `top-edge ${state}`;
+                case firstCol : return `top-left     ${state}`;
+                case lastCol  : return `top-right    ${state}`;
+                default       : return `top-edge     ${state}`;
             }
         case lastRow:
             switch(currentCol) {
-                case firstCol : return `bottom-left ${state}`;
+                case firstCol : return `bottom-left  ${state}`;
                 case lastCol  : return `bottom-right ${state}`;
-                default       : return `bottom-row ${state}`;
+                default       : return `bottom-row   ${state}`;
             }
         default:
             switch(currentCol) {
-                case firstCol : return `left-edge ${state}`;
-                case lastCol  : return `right-edge ${state}`;
-                default       : return `middle ${state}`;
+                case firstCol : return `left-edge    ${state}`;
+                case lastCol  : return `right-edge   ${state}`;
+                default       : return `middle       ${state}`;
             }
     }
 }
-
-// interface gappyArrayOfNumbers {
-//     group: number;
-//     locations: number[];
-// }
-
-// function indexOfGroups(groupState: number[]): gappyArrayOfNumbers[] {
-
-//     let returnValue:gappyArrayOfNumbers[] = [];
-
-//     currentGroups(groupState).forEach( groupCounter => {
-//         returnValue.push({group: groupCounter, locations: []})
-//     });
-
-//     groupState.forEach( groupCounter => {
-//         (returnValue[groupCounter]).push(groupCounter.index)
-//     });
-
-
-//     return [{group: 0, locations: [0,1]}];
-// }
 
 function currentGroups(groupState: number[]): number[] {
     let listOfCurrentGroups: number[] = [];
@@ -118,12 +97,12 @@ function stateOfAdjacentPiece(boardState: string[], groupState: number[], curren
     }
 }
 
-function alteredGroupState(boardState: string[], groupState: number[], currentLocation: number, friendlyColor: string): number[] {
+function addNewPieceToGroupState(boardState: string[], groupState: number[], currentLocation: number, friendlyColor: string): number[] {
         
     const newGroupState = new Array(...groupState);
     const directions = ["UP", "DOWN", "RIGHT", "LEFT"];
     
-    //no friendly pieces adjacent, count one up
+    //no friendly pieces adjacent, make a new group
     if (directions.every( direction => stateOfAdjacentPiece(boardState, groupState, currentLocation, direction)!.board!=friendlyColor)) {
         newGroupState[currentLocation] = nextGroupCounter(groupState);
     }
@@ -146,19 +125,47 @@ function alteredGroupState(boardState: string[], groupState: number[], currentLo
     return newGroupState;
 }
 
-function alteredBoardState(boardState: string[], groupState: number[], currentLocation: number, newState: string):string[] {
+function addNewPieceToBoardState(boardState: string[], groupState: number[], currentLocation: number, color: string):string[] {
     const newBoardState = new Array(...boardState);
-    newBoardState[currentLocation] = newState;
+    newBoardState[currentLocation] = color;
+    return newBoardState;
+}
+
+function removeEnemyPieces(boardState: string[], groupState: number[], enemyColor: string):string[] {
+    const newBoardState = new Array(...boardState);
+
+    currentGroups(groupState).filter( thisGroup => colorOf(thisGroup, newBoardState, groupState)==enemyColor).forEach( thisGroup => {
+        let thisGroupLives = false;
+        for (let location=0; location<groupState.length; location++) {
+            if(groupState[location]==thisGroup) {
+                const directions = ["UP", "RIGHT", "DOWN", "LEFT"];
+                directions.forEach( direction => {
+                    thisGroupLives = stateOfAdjacentPiece(newBoardState, groupState, location, direction)!.board=="empty" || thisGroupLives;
+                });
+            }
+        }
+        if(!thisGroupLives) {
+            for (let i=0; i<newBoardState.length; i++) {
+                if(groupState[i]==thisGroup) {
+                    newBoardState[i]="empty";
+                }
+            }
+        }
+    });
+
     return newBoardState;
 }
 
 export const Baduk: React.FunctionComponent = () => {
 
-    let boardSize = 3;
+    let boardSize = 9;
 
-    const [boardState   , setBoardState   ] = useState<string[]> (new Array(boardSize*boardSize).fill("empty"));
-    const [groupState   , setGroupState   ] = useState<number[]> (new Array(boardSize*boardSize).fill(0      ));
-    const [friendlyColor, setFriendlyColor] = useState<string  > ("black");
+    const [boardState   , setBoardState   ] = useState<string[]  > (new Array(boardSize*boardSize).fill("empty"));
+    const [groupState   , setGroupState   ] = useState<number[]  > (new Array(boardSize*boardSize).fill(0      ));
+    const [friendlyColor, setFriendlyColor] = useState<string    > ("black");
+    const [boardHistory,  setBoardHistory ] = useState<string[][]> ([]);
+
+    // setBoardHistory(boardHistory.push(boardState));
 
     const enemyColor = friendlyColor=="black" ? "white" : "black";
 
@@ -166,31 +173,14 @@ export const Baduk: React.FunctionComponent = () => {
         <div className="board"> 
             {boardState.map((tileState, location) => (
                 <button key={location} className={tileType(boardSize, location, tileState)} onClick={ () => {
+
                     if(tileState=="empty") {
 
-                        let newGroupState = alteredGroupState(boardState, groupState, location, friendlyColor);
-                        let newBoardState = alteredBoardState(boardState, newGroupState, location, friendlyColor);
+                        let newGroupState = addNewPieceToGroupState(boardState, groupState, location, friendlyColor);
+                        let newBoardState = addNewPieceToBoardState(boardState, newGroupState, location, friendlyColor);
                         
                         //check if any enemy pieces have been taken
-                        currentGroups(newGroupState).filter( thisGroup => colorOf(thisGroup, newBoardState, newGroupState)==enemyColor).forEach( thisGroup => {
-                            let thisGroupLives = false;
-                            for (let location=0; location<newGroupState.length; location++) {
-                                if(newGroupState[location]==thisGroup) {
-                                    const directions = ["UP", "RIGHT", "DOWN", "LEFT"];
-                                    directions.forEach( direction => {
-                                        console.log(direction, stateOfAdjacentPiece(newBoardState, newGroupState, location, direction));
-                                        thisGroupLives = stateOfAdjacentPiece(newBoardState, newGroupState, location, direction)!.board=="empty" || thisGroupLives;
-                                    });
-                                }
-                            }
-                            if(!thisGroupLives) {
-                                for (let i=0; i<boardState.length; i++) {
-                                    if(newGroupState[i]==thisGroup) {
-                                        newBoardState[i]="empty";
-                                    }
-                                }
-                            }
-                        });
+                        newBoardState = removeEnemyPieces(newBoardState, newGroupState, enemyColor);
 
                         //check if any friendly pieces need to be removed, in which case it would be an illegal move
                         let revertGroupState = newGroupState;
@@ -207,7 +197,6 @@ export const Baduk: React.FunctionComponent = () => {
                                 }
                             }
                             if(!thisGroupLives) {
-                                console.log("Illegal move");
                                 newGroupState = groupState;
                                 newBoardState = boardState;
                             }

@@ -18,7 +18,7 @@ var ProjectList = [
   {
     "title":"Go",
     "image":"images/baduk.png",
-    "description":"Go app in rapid development",
+    "description":"Go app implements everything but the Ko rule",
     "route":"/baduk"
   } 
 ];
