@@ -1,18 +1,17 @@
 @import "../constants.scss";
 
-// button {
-//   all: initial;
-//   all: unset;
+.calculator-button {
 
-//   box-shadow: 3px 3px black;
-//   border: 1px solid black;
-//   padding: 1px;
-//   margin: 5px;
-//   &:active {
-//     box-shadow: none;
-//     transform: translate(3px, 3px);
-//   }
-// }
+
+  box-shadow: 3px 3px black;
+  border: 1px solid black;
+  padding: 1px;
+  margin: 5px;
+  &:active {
+    box-shadow: none;
+    transform: translate(3px, 3px);
+  }
+}
 
 #root {
   max-width: 1240px;
@@ -26,8 +25,9 @@
   border: solid 4px rgb(72, 73, 84);
   box-shadow: 3px 3px black;
   width: 280px;
-  height: 460px;
+  height: 420px;
   font-family: monospace;
+  margin: 30px;
 }
 
 .viewer {

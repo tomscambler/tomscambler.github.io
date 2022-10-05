@@ -6,20 +6,20 @@ var ProjectList = [
   {
     "title":"Calculator",
     "image":"images/calculator.png",
-    "description":"The Calculator app has been built using React, HTML and SCSS",
+    "description":"The Calculator app has been built using Typescript, React, HTML and SCSS",
     "route":"/calculator"
   },
   {
     "title":"Mars Mission",
     "image":"images/mars-mission.png",
-    "description":"I contributed to the Landing Page and the Fun Facts page of this group project",
+    "description":"I contributed to the Landing Page, Floating Menu and Fun Facts page of this group project",
     "route":"/mars-mission"
   },
   {
     "title":"Go",
-    "image":"images/baduk.png",
-    "description":"Go app implements everything but the Ko rule",
-    "route":"/baduk"
+    "image":"images/go-game.png",
+    "description":"Go app to play against your friends, built using Typescript, React, HTML and SCSS",
+    "route":"/go-game"
   } 
 ];
 

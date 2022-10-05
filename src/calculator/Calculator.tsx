@@ -5,11 +5,23 @@ import "./Calculator.scss";
 function unaryCalculation(display:number, unary:string){
 
   if(unary==='sqrt' && display<0){
-    alert("BEHAVE");
+    alert("BEHAVE!");
     return 0;
   }
   if(unary==='tan' && display%180===90){
-    alert("Nice try, but still denied");
+    alert("BEHAVE!");
+    return 0;
+  }
+  if(unary==='log' && display<=0){
+    alert("BEHAVE!");
+    return 0;
+  }
+  if(unary==='ln' && display<=0){
+    alert("BEHAVE!");
+    return 0;
+  }
+  if(unary==='1/x' && display===0){
+    alert("BEHAVE!");
     return 0;
   }
 
@@ -57,7 +69,7 @@ function evaluateCalculation(display:number, operation:string, operand:number|nu
     return 0;
   }
   if (Math.floor(operand)!==operand && operation === '^' && display < 0){
-    alert("SEE ME");
+    alert("BEHAVE!");
     return 0;
   }
   switch(operation){
@@ -92,8 +104,8 @@ export const Calculator: React.FunctionComponent = () => {
   const [operation, setOperation] = useState <string>      ( '' );
   const [ans,       setAns      ] = useState <number|null> (null);
 
-  const numberSymbols    = [7,8,9,4,5,6,1,2,3,0     ];
-  const operationSymbols = ['^','+','-','×','÷'     ];
+  const numberSymbols    = [7,8,9,4,5,6,1,2,3,0];
+  const operationSymbols = ['÷','×','-','+'];//'^',
   const powerSymbols     = ['C','AC','Del','='];//,'Ans'
   const unarySymbols     = ['sin','cos','tan','sqrt','log','ln','1/x','Abs'];
 
@@ -119,7 +131,7 @@ export const Calculator: React.FunctionComponent = () => {
       <div className="buttons">
         <div className="buttons__unary">
             {unarySymbols.map( unarySymbol => (
-                <button className="buttons__unary--individual" onClick={ () => {
+                <button className="buttons__unary--individual calculator-button" onClick={ () => {
                   setDisplay(unaryCalculation(display,unarySymbol));
                   }}>
                     {unarySymbol}
@@ -129,7 +141,7 @@ export const Calculator: React.FunctionComponent = () => {
         </div>
         <div className="buttons__number">
             {numberSymbols.map( numberSymbol => (
-                <button className="buttons__number--individual" onClick={ () => {
+                <button className="buttons__number--individual calculator-button" onClick={ () => {
                   setOperand( (operand===null?0:operand)*10 + ((operand===null?0:operand)>=0?1:-1)*numberSymbol )
                   }}>
                     {numberSymbol}
@@ -139,7 +151,7 @@ export const Calculator: React.FunctionComponent = () => {
         </div>
         <div className="buttons__operation">
             {operationSymbols.map( operationSymbol => (
-              <button className="buttons__operation--individual" onClick={ () => {
+              <button className="buttons__operation--individual calculator-button" onClick={ () => {
                     if (operand!==null){
                       if (operation==='='){
                         setDisplay(operand);
@@ -159,7 +171,7 @@ export const Calculator: React.FunctionComponent = () => {
         </div>
         <div className="buttons__power">
             {powerSymbols.map( powerSymbol => (
-                <button className="buttons__power--individual" onClick={ () => {
+                <button className="buttons__power--individual calculator-button" onClick={ () => {
                     switch(powerSymbol) {
                       case '=':
                         setAns(evaluateCalculation(display,operation,operand));

@@ -1,4 +1,4 @@
-import { Baduk } from "./baduk/Baduk";
+import { GoGame } from "./goGame/GoGame";
 import { Calculator } from "./calculator/Calculator";
 import { LandingPage } from "./landingPage/LandingPage";
 import { Route, Routes } from "react-router-dom";
@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/calculator" element={<Calculator />} />
         <Route path="/mars-mission" element={<MarsMission />} />
-        <Route path="/baduk" element={<Baduk />} />
+        <Route path="/go-game" element={<GoGame />} />
     </Routes>
   )
 }
