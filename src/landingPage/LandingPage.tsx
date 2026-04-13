@@ -10,12 +10,6 @@ var ProjectList = [
     "route":"/calculator"
   },
   {
-    "title":"Mars Mission",
-    "image":"images/mars-mission.png",
-    "description":"I contributed to the Landing Page, Floating Menu and Fun Facts page of this group project",
-    "route":"/mars-mission"
-  },
-  {
     "title":"Go",
     "image":"images/go-game.png",
     "description":"Go app to play against your friends, built using Typescript, React, HTML and SCSS",
